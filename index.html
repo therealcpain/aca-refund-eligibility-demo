@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ACA $500 Refund Eligibility — WH Sep 10 criteria · October checks literacy card</title>
+  <meta name="description" content="Paste your state + coverage source + premium tax credit status + view date. Get one shareable card: Eligible / Not in scope / Unsure from public WH Sep 10 Working Families Obamacare Refunds criteria ($500 · 30 FFM states · no APTC · checks begin October 2026). Fact-sheet literacy only. Not tax, legal, or medical advice.">
+  <meta name="theme-color" content="#0b0f14">
+  <meta property="og:title" content="ACA $500 Refund Eligibility">
+  <meta property="og:description" content="Paste state + subsidy status — in scope for the $500? WH Sep 10 criteria · October start. Not tax/legal/medical advice.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">$500</div>
+        <div>
+          <h1>ACA $500 Refund Eligibility</h1>
+          <p class="tagline">Paste state + subsidy status → in scope? · October start · share card.</p>
+        </div>
+      </div>
+      <span class="badge">Not tax / legal / medical advice</span>
+    </header>
+
+    <aside class="myth-banner" role="note">
+      <strong>Disclaimer.</strong>
+      This card is <em>fact-sheet literacy</em> — <strong>not</strong> tax advice, <strong>not</strong> legal advice, <strong>not</strong> medical or enrollment advice, and <strong>not</strong> a payment tracker that invents a mail date or your check.
+      Public framing only (White House Sep&nbsp;10&nbsp;2026 Working Families Obamacare Refunds fact sheet / CNBC Sep&nbsp;10 reporting): about <strong>$500 per person</strong> for nearly <strong>1 million</strong> Americans in <strong>30</strong> federal Marketplace (FFM) states who do <strong>not</strong> receive premium assistance; checks begin <strong>October&nbsp;2026</strong>; funds framed as surplus exchange “user fees.”
+      As of Sep&nbsp;13&nbsp;2026 there is <strong>no public application portal</strong> cited — eligibility here is criteria-matching from your pasted chips only. We never invent an eligibility determination beyond that triad.
+      Sources:
+      <a href="https://www.presidency.ucsb.edu/documents/white-house-fact-sheet-president-donald-j-trump-announces-the-working-families-obamacare" target="_blank" rel="noopener noreferrer">WH fact sheet (Presidency Project archive)</a>
+      ·
+      <a href="https://www.cnbc.com/2026/09/10/trump-obamacare-refunds-aca.html" target="_blank" rel="noopener noreferrer">CNBC Sep 10 2026</a>
+      ·
+      <a href="https://www.healthcare.gov/" target="_blank" rel="noopener noreferrer">HealthCare.gov</a>.
+    </aside>
+
+    <section class="panel lookup" aria-labelledby="lookup-heading">
+      <h2 id="lookup-heading">1. Paste state + coverage + APTC + the date you’re looking</h2>
+      <p class="hint">
+        Your chips only — no Healthcare.gov login. Outcome is <strong>Eligible / Not in scope / Unsure</strong> from public WH Sep&nbsp;10 criteria
+        (30 FFM states · no premium assistance · ~$500/person · October start). We never invent a mail date or guarantee a check.
+      </p>
+
+      <div class="field-grid four">
+        <div>
+          <label for="state">State of residence</label>
+          <select id="state" required></select>
+        </div>
+        <div>
+          <label for="coverage">Coverage source</label>
+          <select id="coverage">
+            <option value="healthcare_gov">HealthCare.gov (federal Marketplace)</option>
+            <option value="state_marketplace">State marketplace / SBE</option>
+            <option value="employer">Employer / job-based</option>
+            <option value="medicaid_medicare">Medicaid / Medicare</option>
+            <option value="unsure">Unsure</option>
+          </select>
+        </div>
+        <div>
+          <label for="aptc">Premium tax credit (APTC)?</label>
+          <select id="aptc">
+            <option value="no">No — not receiving APTC</option>
+            <option value="yes">Yes — receiving APTC / premium assistance</option>
+            <option value="unsure">Unsure</option>
+          </select>
+        </div>
+        <div>
+          <label for="viewDate">View date (when you’re looking)</label>
+          <input id="viewDate" type="date" required />
+        </div>
+      </div>
+
+      <div class="field-grid four">
+        <div>
+          <label for="noteLabel">Note label (optional)</label>
+          <input id="noteLabel" type="text" maxlength="64" placeholder="e.g. Redacted · TX roommate chat" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="cardBtn">Show eligibility card</button>
+        <button type="button" class="btn" id="clearBtn">Clear</button>
+      </div>
+      <p class="status" id="status" aria-live="polite"></p>
+
+      <h3 class="subhead">Seed examples (teaching chips)</h3>
+      <div class="seed-chips" id="seedChips" role="list" aria-label="Seed ACA refund eligibility examples"></div>
+    </section>
+
+    <section class="panel card-panel" aria-labelledby="card-heading" id="cardSection" hidden>
+      <div class="card-toolbar">
+        <h2 id="card-heading">2. Shareable eligibility card</h2>
+        <div class="actions">
+          <button type="button" class="btn" id="copySummary">Copy summary</button>
+          <button type="button" class="btn" id="shareBtn">Share link</button>
+          <button type="button" class="btn" id="pngBtn">Export PNG</button>
+        </div>
+      </div>
+
+      <!-- PRIMARY VISUAL: Eligible / Not in scope / Unsure + October countdown -->
+      <article class="renewal-card" id="eligCard" aria-labelledby="eligHeadline">
+        <header class="card-head">
+          <div>
+            <p class="brand-line">ACA $500 Refund Eligibility</p>
+            <p class="meta-line" id="cardMeta">—</p>
+            <h3 id="eligHeadline">Criteria check</h3>
+          </div>
+          <div class="verdict" id="clockBadge">
+            <span class="verdict-k" id="clockPill">—</span>
+            <span class="verdict-s" id="clockSub">October check window</span>
+          </div>
+        </header>
+
+        <div class="hero-row">
+          <div class="hero-stat cy-lead elig-hero">
+            <span class="hero-kicker">Fact-sheet criteria match</span>
+            <div class="elig-badge-giant" id="statusDisp">—</div>
+            <span class="delta-chip" id="amountChip">$500 / person · public figure</span>
+            <span class="hero-sub" id="statusLine">WH Sep 10 criteria — not a determination portal</span>
+          </div>
+          <div class="hero-stat fee ring-stat">
+            <span class="hero-kicker">Days to Oct start</span>
+            <div class="ring-wrap" aria-hidden="true">
+              <div class="fee-ring" id="daysRing" style="--pct:0"></div>
+              <div class="ring-center">
+                <span class="hero-value" id="daysRingDisp">—</span>
+              </div>
+            </div>
+            <span class="hero-sub" id="announceLine">Checks begin October 2026</span>
+          </div>
+        </div>
+
+        <p class="look-enroll-flag" id="actionFlag" aria-live="polite">—</p>
+
+        <p class="criteria-strip" id="criteriaStrip" aria-live="polite">$500 · Oct start · FFM + no APTC</p>
+        <p class="portal-strip" id="portalStrip">No public application portal as of Sep 13 — fact-sheet criteria only; not tax or enrollment advice.</p>
+
+        <div class="receipt-strip four" id="receiptStrip" aria-label="Criteria breakdown">
+          <div class="r-item"><span class="r-k">State</span><span class="r-v" id="rState">—</span></div>
+          <div class="r-item"><span class="r-k">FFM (30)</span><span class="r-v" id="rFfm">—</span></div>
+          <div class="r-item"><span class="r-k">Coverage</span><span class="r-v" id="rCoverage">—</span></div>
+          <div class="r-item"><span class="r-k">APTC</span><span class="r-v" id="rAptc">—</span></div>
+        </div>
+
+        <p class="decoder-line" id="decoderLine">—</p>
+        <p class="action-line" id="actionLine">—</p>
+        <p class="cite-line" id="citeLine">—</p>
+
+        <footer class="card-foot">
+          <span>User-pasted chips · no Healthcare.gov scrape</span>
+          <span>Fact-sheet literacy only · not tax/legal/medical advice</span>
+        </footer>
+      </article>
+
+      <div class="share-box" id="shareBox" hidden>
+        <label for="shareUrl">Share URL (hash restores your pasted fields)</label>
+        <div class="row">
+          <input id="shareUrl" type="text" readonly />
+          <button type="button" class="btn" id="copyShare" style="flex:0 0 auto">Copy</button>
+        </div>
+        <p class="hint">Append UTM when you post, e.g. <code>?utm_source=reddit&amp;utm_medium=organic&amp;utm_campaign=aca_refund_eligibility_mvp</code></p>
+      </div>
+
+      <div class="source-links" id="sourceLinks"></div>
+    </section>
+
+    <section class="panel legend" aria-labelledby="legend-heading">
+      <h2 id="legend-heading">How to read the card</h2>
+      <ul class="legend-list">
+        <li><span class="pill allin">Eligible</span> Your pasted state is in the public <strong>30 FFM</strong> list, coverage is <strong>HealthCare.gov</strong>, and APTC chip is <strong>no</strong> — matches WH Sep&nbsp;10 “no premium assistance” framing. Giant badge + under-hero flag carry status in <strong>text</strong> (not color alone). <strong>Not a guarantee you will receive a check.</strong></li>
+        <li><span class="pill claim">Not in scope</span> State outside the 30, state-based exchange, employer / Medicaid-Medicare coverage, or receiving APTC — outside the public target framing.</li>
+        <li><span class="pill fee">Unsure</span> APTC or coverage chip is unsure (and not already a hard out) — need more clarity; we will not invent a determination.</li>
+        <li><span class="pill fee">Days to Oct start</span> Countdown from your view date to <strong>Oct&nbsp;1&nbsp;2026</strong> (checks begin October). TODAY / UNDERWAY when on/after that day. Never invents a personal mail date.</li>
+        <li><strong>No portal yet.</strong> Portal strip stays on the share PNG. HealthCare.gov pointer for Marketplace literacy only.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <strong>ACA $500 Refund Eligibility</strong> — criteria-honest share card for the Working Families Obamacare Refunds announce.
+      <ul>
+        <li>Paste state · coverage · APTC · view date → Eligible / Not in scope / Unsure + October countdown</li>
+        <li>User paste only · zero scrape · fact-sheet criteria only · not tax/legal/medical advice</li>
+        <li>Free utility · ad-supported path (see README)</li>
+      </ul>
+    </footer>
+    <canvas id="pngCanvas" width="900" height="1180" hidden aria-hidden="true"></canvas>
+  </div>
+</body>
+</html>
